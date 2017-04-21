@@ -42,10 +42,4 @@ None yet
 
 ## Release Notes
 
-This release is mostly proof of concept. Now that the basic groundwork is laid,
-more advanced features and settings can be added.
-
-### 0.0.1
-
-* Initial release
-* Implemented basic Rails application navigation
+See the [change log](CHANGELOG.md)
