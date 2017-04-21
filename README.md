@@ -24,6 +24,14 @@ basic Rails application navigation.
 
 ![Navigating using the extension](images/navigating.gif)
 
+## Usage
+
+1. Run "Navigate Rails Project" from the command palette.
+2. Choose a category of files to browse
+3. Choose a file to open
+
+You can also assign a keybinding to `navigateRailsProject.navigate`, in place of #1.
+
 ## Extension Settings
 
 Coming Soon!
