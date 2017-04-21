@@ -17,7 +17,7 @@ function activate(context) {
   categories.add('Tests', 'test');
   categories.add('Views', 'app/views', 'app/views/layouts/**/*.*');
 
-  var disposable = commands.registerCommand('extension.navigateRailsProject', function () {
+  var disposable = commands.registerCommand('navigateRailsProject.navigate', function () {
     window.showQuickPick(categories.names(), {placeholder: 'Select a Category'}).then((selected) => {
       if (!selected) { return; }
 
