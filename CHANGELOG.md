@@ -2,7 +2,8 @@
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
 ## 0.0.4
-* Rename command from `navigateRailsProject.navigate` to `railsProjectNavigator.navigate`
+* Renamed command from `navigateRailsProject.navigate` to `railsProjectNavigator.navigate`
+
 ## 0.0.3
 * Fix markdown issue in readme
 
