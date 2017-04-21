@@ -9,18 +9,18 @@ basic Rails application navigation.
 
 * Quickly access files preset paths relative to your application
 * Default categories which can be browsed are:
-  * Config (*\<workspace folder>/config*, excluding initializers)
-  * Controllers (*\<workspace folder>/app/controllers*)
-  * Helpers (*\<workspace folder>/app/helpers*)
-  * Initializers (*\<workspace folder>/config/initializers*)
-  * Jobs (*\<workspace folder>/app/jobs*)
-  * Layouts (*\<workspace folder>/app/views/layouts*)
-  * Mailers (*\<workspace folder>/app/mailers*)
-  * Migrations (*\<workspace folder>/db/migrate*)
-  * Models (*\<workspace folder>/app/models*)
-  * Specs (*\<workspace folder>/spec*)
-  * Tests (*\<workspace folder>/test*)
-  * Views (*\<workspace folder>/app/views*, excluding layouts)
+  * Config (*[workspace folder]/config*, excluding initializers)
+  * Controllers (*[workspace folder]/app/controllers*)
+  * Helpers (*[workspace folder]/app/helpers*)
+  * Initializers (*[workspace folder]/config/initializers*)
+  * Jobs (*[workspace folder]/app/jobs*)
+  * Layouts (*[workspace folder]/app/views/layouts*)
+  * Mailers (*[workspace folder]/app/mailers*)
+  * Migrations (*[workspace fo]der]/db/migrate*)
+  * Models (*[workspace folder]/app/models*)
+  * Specs (*[workspace folder]/spec*)
+  * Tests (*[workspace folder]/test*)
+  * Views (*[workspace folder]/app/views*, excluding layouts)
 
 ![Navigating using the extension](images/navigating.gif)
 
