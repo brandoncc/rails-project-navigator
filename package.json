@@ -12,12 +12,12 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:navigateRailsProject.navigate"
+        "onCommand:railsProjectNavigator.navigate"
     ],
     "main": "./extension",
     "contributes": {
         "commands": [{
-            "command": "navigateRailsProject.navigate",
+            "command": "railsProjectNavigator.navigate",
             "title": "Navigate Rails Project"
         }]
     },
