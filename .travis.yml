@@ -12,6 +12,7 @@ before_install:
     fi
 
 install:
+  - npm install npm@latest -g
   - npm install
 
 script:
