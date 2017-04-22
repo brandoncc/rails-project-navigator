@@ -1,4 +1,4 @@
-# Rails Project Navigator for Visual Studio Code
+# Rails Project Navigator for Visual Studio Code [![Build Status](https://travis-ci.org/brandoncc/rails-project-navigator.svg?branch=master)](https://travis-ci.org/brandoncc/rails-project-navigator)
 
 The idea for this extension came from Tim Pope's excellent
 [rails.vim](https://github.com/tpope/vim-rails) vim plugin. While it doesn't
