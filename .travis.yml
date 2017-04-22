@@ -18,8 +18,8 @@ before_install:
       sleep 3;
     fi
   - if [ $TRAVIS_OS_NAME == "osx" ]; then
-      export CODE_TESTS_PATH=/Users/travis/brandoncc/rails-project-navigator/test;
-      export CODE_TESTS_WORKSPACE=/Users/travis/brandoncc/rails-project-navigator/test/hello_world;
+      export CODE_TESTS_PATH=/Users/travis/build/brandoncc/rails-project-navigator/test;
+      export CODE_TESTS_WORKSPACE=/Users/travis/build/brandoncc/rails-project-navigator/test/hello_world;
     fi
 
 install:
