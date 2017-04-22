@@ -1,6 +1,11 @@
 # Change Log
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [UNRELEASED]
+* Renamed `Categories.prototype.getFilesFor` to 
+  `Categories.prototype.showFilesFor` because it shows the quickpick UI, rather
+  than returning a list of files which was the original intention.
+
 ## 0.0.4
 * Renamed command from `navigateRailsProject.navigate` to `railsProjectNavigator.navigate`
 

@@ -21,7 +21,7 @@ function activate(context) {
     window.showQuickPick(categories.names(), {placeholder: 'Select a Category'}).then((selected) => {
       if (!selected) { return; }
 
-      categories.getFilesFor(selected);
+      categories.showFilesFor(selected);
     });
   });
 
