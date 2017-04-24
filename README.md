@@ -1,9 +1,6 @@
 # Rails Project Navigator for Visual Studio Code [![Build Status](https://travis-ci.org/brandoncc/rails-project-navigator.svg?branch=master)](https://travis-ci.org/brandoncc/rails-project-navigator)
 
-The idea for this extension came from Tim Pope's excellent
-[rails.vim](https://github.com/tpope/vim-rails) vim plugin. While it doesn't
-do everything that rails.vim does, my goal was to start with implementing the
-basic Rails application navigation.
+The idea for this extension came from Tim Pope's excellent [rails.vim](https://github.com/tpope/vim-rails) vim plugin. While it doesn't do everything that rails.vim does, my goal was to start with implementing the basic Rails application navigation. 
 
 ## Features
 
@@ -47,6 +44,7 @@ None yet
 * Allow users to disable categories completely
 * Allow users to override default categories and their settings
 * Allow users to add "global exclude" patterns which will cause files to be excluded for all categories
+* Add "Rake Tasks" to default categories
 
 ## Release Notes
 
