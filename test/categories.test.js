@@ -3,6 +3,7 @@
 const expect = require('expect.js');
 const { window, workspace } = require('vscode');
 const Categories = require('../lib/categories');
+const path = require('path');
 
 describe("Categories", function () {
   before(function () {
@@ -25,10 +26,12 @@ describe("Categories", function () {
   describe("#showFilesFor", function() {
     before(function() {
       this.mockShowQuickPick = window.showQuickPick.bind(window);
+      this.mockOpenTextDocument = workspace.openTextDocument.bind(workspace);
     });
 
     after(function() {
       window.showQuickPick = this.mockShowQuickPick;
+      workspace.openTextDocument = this.mockOpenTextDocument;
     });
 
     it("displays the correct config files", function(done) {
@@ -277,6 +280,26 @@ describe("Categories", function () {
 
         return returned;
       };
+
+      this.categories.showFilesFor('Views');
+    });
+
+    it ("opens the chosen file", function(done) {
+      const selectedItem = 'users/index.html.erb';
+      const self = this;
+
+      window.showQuickPick = function(items, options, token) {
+        return new Promise(function(resolve, reject) {
+          resolve(selectedItem);
+        });
+      };
+
+      workspace.openTextDocument = function(openPath) {
+        done();
+        expect(openPath.toString()).to.be('file://' + path.join(workspace.rootPath, 'app/views', selectedItem));
+
+        return self.mockOpenTextDocument(openPath);
+      }
 
       this.categories.showFilesFor('Views');
     });
