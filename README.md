@@ -39,7 +39,6 @@ None yet
 
 ## TODO
 
-* Add specs
 * Add user configuration
 * Allow users to disable categories completely
 * Allow users to override default categories and their settings

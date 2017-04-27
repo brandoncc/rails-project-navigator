@@ -1,10 +1,9 @@
 # Change Log
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [UNRELEASED]
-* Renamed `Categories.prototype.getFilesFor` to 
-  `Categories.prototype.showFilesFor` because it shows the quickpick UI, rather
-  than returning a list of files which was the original intention.
+## 0.0.5
+* Renamed `Categories.prototype.getFilesFor` to `Categories.prototype.showFilesFor` because it shows the quickpick UI, rather than returning a list of files which was the original intention.
+* Added integration specs
 
 ## 0.0.4
 * Renamed command from `navigateRailsProject.navigate` to `railsProjectNavigator.navigate`
@@ -16,8 +15,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 * Fix repository in package.json so images work
 
 ## 0.0.1
-This release is mostly proof of concept. Now that the basic groundwork is laid,
-more advanced features and settings can be added.
+This release is mostly proof of concept. Now that the basic groundwork is laid, more advanced features and settings can be added.
 
 * Initial release
 * Implemented basic Rails application navigation

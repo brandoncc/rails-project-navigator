@@ -2,7 +2,7 @@
   "name": "rails-project-navigator",
   "displayName": "Rails Project Navigator",
   "description": "Easily navigate the files in Rails applications",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "publisher": "brandoncc",
   "repository": "https://github.com/brandoncc/rails-project-navigator",
   "engines": {
