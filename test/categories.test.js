@@ -1,6 +1,6 @@
 /* global describe, before, after, it */
 
-const expect = require('expect.js');
+const { expect } = require('chai');
 const { window, workspace } = require('vscode');
 const Categories = require('../lib/categories');
 const path = require('path');
@@ -55,7 +55,7 @@ describe("Categories", function () {
 
       window.showQuickPick = function(items, options, token) {
         var returned = self.mockShowQuickPick(items, options, token);
-        expect(items).to.eql(expectedValues);
+        expect(items).to.have.same.members(expectedValues);
         done();
 
         return returned;
@@ -74,7 +74,7 @@ describe("Categories", function () {
 
       window.showQuickPick = function(items, options, token) {
         var returned = self.mockShowQuickPick(items, options, token);
-        expect(items).to.eql(expectedValues);
+        expect(items).to.have.same.members(expectedValues);
         done();
 
         return returned;
@@ -92,7 +92,7 @@ describe("Categories", function () {
 
       window.showQuickPick = function(items, options, token) {
         var returned = self.mockShowQuickPick(items, options, token);
-        expect(items).to.eql(expectedValues);
+        expect(items).to.have.same.members(expectedValues);
         done();
 
         return returned;
@@ -118,7 +118,7 @@ describe("Categories", function () {
 
       window.showQuickPick = function(items, options, token) {
         var returned = self.mockShowQuickPick(items, options, token);
-        expect(items).to.eql(expectedValues);
+        expect(items).to.have.same.members(expectedValues);
         done();
 
         return returned;
@@ -135,7 +135,7 @@ describe("Categories", function () {
 
       window.showQuickPick = function(items, options, token) {
         var returned = self.mockShowQuickPick(items, options, token);
-        expect(items).to.eql(expectedValues);
+        expect(items).to.have.same.members(expectedValues);
         done();
 
         return returned;
@@ -154,7 +154,7 @@ describe("Categories", function () {
 
       window.showQuickPick = function(items, options, token) {
         var returned = self.mockShowQuickPick(items, options, token);
-        expect(items).to.eql(expectedValues);
+        expect(items).to.have.same.members(expectedValues);
         done();
 
         return returned;
@@ -171,7 +171,7 @@ describe("Categories", function () {
 
       window.showQuickPick = function(items, options, token) {
         var returned = self.mockShowQuickPick(items, options, token);
-        expect(items).to.eql(expectedValues);
+        expect(items).to.have.same.members(expectedValues);
         done();
 
         return returned;
@@ -188,7 +188,7 @@ describe("Categories", function () {
 
       window.showQuickPick = function(items, options, token) {
         var returned = self.mockShowQuickPick(items, options, token);
-        expect(items).to.eql(expectedValues);
+        expect(items).to.have.same.members(expectedValues);
         done();
 
         return returned;
@@ -207,7 +207,7 @@ describe("Categories", function () {
 
       window.showQuickPick = function(items, options, token) {
         var returned = self.mockShowQuickPick(items, options, token);
-        expect(items).to.eql(expectedValues);
+        expect(items).to.have.same.members(expectedValues);
         done();
 
         return returned;
@@ -224,7 +224,7 @@ describe("Categories", function () {
 
       window.showQuickPick = function(items, options, token) {
         var returned = self.mockShowQuickPick(items, options, token);
-        expect(items).to.eql(expectedValues);
+        expect(items).to.have.same.members(expectedValues);
         done();
 
         return returned;
@@ -251,7 +251,7 @@ describe("Categories", function () {
 
       window.showQuickPick = function(items, options, token) {
         var returned = self.mockShowQuickPick(items, options, token);
-        expect(items).to.eql(expectedValues);
+        expect(items).to.have.same.members(expectedValues);
         done();
 
         return returned;
@@ -275,7 +275,7 @@ describe("Categories", function () {
 
       window.showQuickPick = function(items, options, token) {
         var returned = self.mockShowQuickPick(items, options, token);
-        expect(items).to.eql(expectedValues);
+        expect(items).to.have.same.members(expectedValues);
         done();
 
         return returned;
@@ -296,7 +296,7 @@ describe("Categories", function () {
 
       workspace.openTextDocument = function(openPath) {
         done();
-        expect(openPath.toString()).to.be('file://' + path.join(workspace.rootPath, 'app/views', selectedItem));
+        expect(openPath.toString()).to.equal('file://' + path.join(workspace.rootPath, 'app/views', selectedItem));
 
         return self.mockOpenTextDocument(openPath);
       }

@@ -1,7 +1,10 @@
 # Change Log
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## 0.0.5
+## 0.0.8
+* Switch from expect.js to chai because expect.js doesn't have a way to match arrays without testing the specific element order.
+
+## 0.0.7
 * Renamed `Categories.prototype.getFilesFor` to `Categories.prototype.showFilesFor` because it shows the quickpick UI, rather than returning a list of files which was the original intention.
 * Added integration specs
 
