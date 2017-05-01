@@ -8,9 +8,26 @@ function activate(context) {
     return new Promise((res, rej) => {
       categories.showCategories()
         .then(categories.getFilesFor.bind(categories), rej)
-        .then(categories.showFiles.bind(categories), rej)
-        .then(categories.openFile.bind(categories), rej)
-        .then(res, rej);
+        .then(result => {
+          categories.showFiles(result)
+            .then(selectedFile => {
+              categories.openFile(selectedFile).then(result => {
+                res(result);
+              }, error => {
+                if (error === "No file selected") {
+                  res(false);
+                } else {
+                  rej(error);
+                }
+              });
+            });
+          }, error => {
+            if (error === "No category selected") {
+              res(false);
+            } else {
+              rej(error);
+            }
+          });
     });
   });
 
