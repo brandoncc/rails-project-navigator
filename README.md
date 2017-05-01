@@ -18,6 +18,7 @@ Although the defaults are configured for a Rails application, you can override t
   * Mailers (*[workspace folder]/app/mailers*)
   * Migrations (*[workspace fo]der]/db/migrate*)
   * Models (*[workspace folder]/app/models*)
+  * Rake Tasks (*[workspace folder]/lib/tasks*)
   * Specs (*[workspace folder]/spec*)
   * Tests (*[workspace folder]/test*)
   * Views (*[workspace folder]/app/views*, excluding layouts)
@@ -53,7 +54,6 @@ None yet
 ## TODO
 
 * Allow users to add "global exclude" patterns which will cause files to be excluded for all categories
-* Add "Rake Tasks" to default categories
 
 ## Release Notes
 

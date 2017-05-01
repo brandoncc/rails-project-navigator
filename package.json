@@ -66,6 +66,10 @@
               "path": "app/models"
             },
             {
+              "name": "Rake Tasks",
+              "path": "lib/tasks"
+            },
+            {
               "name": "Specs",
               "path": "spec"
             },
