@@ -20,7 +20,7 @@ describe("Categories", function () {
       expect(testCategories.names()).to.have.same.members([
         "Config", "Controllers", "Helpers", "Initializers",
         "Jobs", "Layouts", "Mailers", "Migrations", "Models",
-        "Specs", "Tests", "Views"
+        "Rake Tasks", "Specs", "Tests", "Views"
       ]);
     });
 
@@ -93,6 +93,34 @@ describe("Categories", function () {
         done(new Error(`Failed to execute #getFilesFor: ${error}`));
       });
     });
+
+    it("validates categories", function() {
+      const stub = sinon.stub(workspace, 'getConfiguration');
+      const spy = sinon.spy(window, "showErrorMessage");
+
+      stub.withArgs('rails-project-navigator').returns({
+        get: function(key) {
+          if (key !== 'categories') {
+            done(new Error('Wrong key was attempted to be retrieved'));
+            return;
+          }
+
+          return [
+            {
+              "name": "Services",
+            },
+          ];
+        }
+      });
+
+      new Categories();
+
+      expect(spy.calledOnce).to.equal(true);
+      expect(spy.calledWith("Navigate Rails Project settings are invalid")).to.equal(true);
+
+      stub.restore();
+      spy.restore();
+    })
   });
 
   describe("#add", function() {
