@@ -21,7 +21,54 @@
         "command": "railsProjectNavigator.navigate",
         "title": "Navigate Rails Project"
       }
-    ]
+    ],
+    "configuration": {
+      "properties": {
+        "rails-project-navigator.categories": {
+          "type": "object",
+          "description": "Configuration for the categories which are listed and how they display files",
+          "default": [{
+            "name": "Config",
+            "path": "config",
+            "exclusionGlob": "config/initializers/**/*.*"
+          }, {
+            "name": "Controllers",
+            "path": "app/controllers"
+          }, {
+            "name":"Helpers",
+            "path": "app/helpers"
+          }, {
+            "name":"Initializers",
+            "path": "config/initializers"
+          }, {
+            "name":"Jobs",
+            "path": "app/jobs"
+          }, {
+            "name":"Layouts",
+            "path": "app/views/layouts"
+          }, {
+            "name":"Mailers",
+            "path": "app/mailers"
+          }, {
+            "name":"Migrations",
+            "path": "db/migrate"
+          }, {
+            "name":"Models",
+            "path": "app/models"
+          }, {
+            "name":"Specs",
+            "path": "spec"
+          }, {
+            "name":"Tests",
+            "path": "test"
+          }, {
+            "name":"Views",
+            "path": "app/views",
+            "exclusionGlob": "app/views/layouts/**/*.*"
+          }]
+        }
+      }
+    }
   },
   "scripts": {
     "postinstall": "node ./node_modules/vscode/bin/install",
