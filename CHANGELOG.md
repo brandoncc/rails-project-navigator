@@ -1,6 +1,12 @@
 # Change Log
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## 0.1.0
+* Major rewrite to return promises from each method
+* Categories are now determined from `rails-project-navigator.categories` setting
+* Users can both define new categories as well as override the defaults
+* Validate user settings
+
 ## 0.0.8
 * Switch from expect.js to chai because expect.js doesn't have a way to match arrays without testing the specific element order.
 

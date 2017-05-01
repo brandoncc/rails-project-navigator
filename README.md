@@ -2,9 +2,12 @@
 
 The idea for this extension came from Tim Pope's excellent [rails.vim](https://github.com/tpope/vim-rails) vim plugin. While it doesn't do everything that rails.vim does, my goal was to start with implementing the basic Rails application navigation. 
 
+Although the defaults are configured for a Rails application, you can override them and use this extension with any project.
+
 ## Features
 
-* Quickly access files preset paths relative to your application
+* Quickly access files in preset paths relative to your application
+* Create your own mappings as well as override the defaults
 * Default categories which can be browsed are:
   * Config (*[workspace folder]/config*, excluding initializers)
   * Controllers (*[workspace folder]/app/controllers*)
@@ -31,7 +34,17 @@ You can also assign a keybinding to `railsProjectNavigator.navigate`, in place o
 
 ## Extension Settings
 
-Coming Soon!
+You can customize the categories which are displayed however you would like. You can create your own as well as modify or even remove the defaults. The configuration is done using the `rails-project-navigator.categories` configuration setting.
+
+The setting should be an array of objects which each have at least a `name` and `path` key with string values.
+
+The valid keys are:
+
+* `"name"` -- The text which will be displayed in the selection (quick pick) box
+* `"path"` -- The path to the files in this category, relative to the currently opened folder in VS Code
+* `"exclusionGlob"` -- Any files matching this glob will not be listed when you browse the category
+
+The recommended location for these settings is in "workspace settings", so that each of your projects can have their own configuration.
 
 ## Known Issues
 
@@ -39,9 +52,6 @@ None yet
 
 ## TODO
 
-* Add user configuration
-* Allow users to disable categories completely
-* Allow users to override default categories and their settings
 * Allow users to add "global exclude" patterns which will cause files to be excluded for all categories
 * Add "Rake Tasks" to default categories
 

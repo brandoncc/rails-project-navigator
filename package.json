@@ -2,7 +2,7 @@
   "name": "rails-project-navigator",
   "displayName": "Rails Project Navigator",
   "description": "Easily navigate the files in Rails applications",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "publisher": "brandoncc",
   "repository": "https://github.com/brandoncc/rails-project-navigator",
   "engines": {
@@ -25,47 +25,60 @@
     "configuration": {
       "properties": {
         "rails-project-navigator.categories": {
-          "type": "object",
+          "type": "array",
           "description": "Configuration for the categories which are listed and how they display files",
-          "default": [{
-            "name": "Config",
-            "path": "config",
-            "exclusionGlob": "config/initializers/**/*.*"
-          }, {
-            "name": "Controllers",
-            "path": "app/controllers"
-          }, {
-            "name":"Helpers",
-            "path": "app/helpers"
-          }, {
-            "name":"Initializers",
-            "path": "config/initializers"
-          }, {
-            "name":"Jobs",
-            "path": "app/jobs"
-          }, {
-            "name":"Layouts",
-            "path": "app/views/layouts"
-          }, {
-            "name":"Mailers",
-            "path": "app/mailers"
-          }, {
-            "name":"Migrations",
-            "path": "db/migrate"
-          }, {
-            "name":"Models",
-            "path": "app/models"
-          }, {
-            "name":"Specs",
-            "path": "spec"
-          }, {
-            "name":"Tests",
-            "path": "test"
-          }, {
-            "name":"Views",
-            "path": "app/views",
-            "exclusionGlob": "app/views/layouts/**/*.*"
-          }]
+          "default": [
+            {
+              "name": "Config",
+              "path": "config",
+              "exclusionGlob": "config/initializers/**/*.*"
+            },
+            {
+              "name": "Controllers",
+              "path": "app/controllers"
+            },
+            {
+              "name": "Helpers",
+              "path": "app/helpers"
+            },
+            {
+              "name": "Initializers",
+              "path": "config/initializers"
+            },
+            {
+              "name": "Jobs",
+              "path": "app/jobs"
+            },
+            {
+              "name": "Layouts",
+              "path": "app/views/layouts"
+            },
+            {
+              "name": "Mailers",
+              "path": "app/mailers"
+            },
+            {
+              "name": "Migrations",
+              "path": "db/migrate"
+            },
+            {
+              "name": "Models",
+              "path": "app/models"
+            },
+            {
+              "name": "Specs",
+              "path": "spec"
+            },
+            {
+              "name": "Tests",
+              "path": "test"
+            },
+            {
+              "name": "Views",
+              "path": "app/views",
+              "exclusionGlob": "app/views/layouts/**/*.*"
+            }
+          ]
         }
       }
     }
@@ -80,6 +93,7 @@
     "chai": "^3.5.0",
     "eslint": "^3.6.0",
     "mocha": "^2.3.3",
+    "sinon": "^2.1.0",
     "typescript": "^2.0.3",
     "vscode": "^1.0.0"
   }

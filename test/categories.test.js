@@ -1,307 +1,267 @@
-/* global describe, before, after, it */
+/* global describe, before, after, beforeEach,it */
 
 const { expect } = require('chai');
-const { window, workspace } = require('vscode');
+const { commands, window, workspace } = require('vscode');
+const sinon = require('sinon');
 const Categories = require('../lib/categories');
-const path = require('path');
+
+const clearCategories = categoriesObject => categoriesObject._categories = {};
 
 describe("Categories", function () {
-  before(function () {
+  beforeEach(function () {
     this.categories = new Categories();
-
-    this.categories.add('Config', 'config', 'config/initializers/**/*.*');
-    this.categories.add('Controllers', 'app/controllers');
-    this.categories.add('Helpers', 'app/helpers');
-    this.categories.add('Initializers', 'config/initializers');
-    this.categories.add('Jobs', 'app/jobs');
-    this.categories.add('Layouts', 'app/views/layouts');
-    this.categories.add('Mailers', 'app/mailers');
-    this.categories.add('Migrations', 'db/migrate');
-    this.categories.add('Models', 'app/models');
-    this.categories.add('Specs', 'spec');
-    this.categories.add('Tests', 'test');
-    this.categories.add('Views', 'app/views', 'app/views/layouts/**/*.*');
+    clearCategories(this.categories);
   });
 
-  describe("#showFilesFor", function() {
+  describe("initialization", function() {
+    it("adds the categories defined in configuration settings", function() {
+      const testCategories = new Categories();
+
+      expect(testCategories.names()).to.have.same.members([
+        "Config", "Controllers", "Helpers", "Initializers",
+        "Jobs", "Layouts", "Mailers", "Migrations", "Models",
+        "Specs", "Tests", "Views"
+      ]);
+    });
+
+    it("allows users to define their own categories", function(done) {
+      const stub = sinon.stub(workspace, 'getConfiguration');
+      const expectedValues = [
+        'registration.rb'
+      ];
+
+      stub.withArgs('rails-project-navigator').returns({
+        get: function(key) {
+          if (key !== 'categories') {
+            done(new Error('Wrong key was attempted to be retrieved'));
+            return;
+          }
+
+          return [
+            {
+              "name": "Services",
+              "path": "app/services"
+            },
+          ];
+        }
+      });
+
+      const testCategories = new Categories();
+
+      stub.restore();
+
+      testCategories.getFilesFor("Services").then(result => {
+        expect(result.files).to.have.same.members(expectedValues);
+        done();
+      }, () => {
+        done(new Error("Failed to execute #getFilesFor"));
+      });
+    })
+
+    it("allows users to override default categories", function(done) {
+      const stub = sinon.stub(workspace, 'getConfiguration');
+      const expectedValues = [
+        'application_controller.rb',
+        'users_controller.rb'
+      ];
+
+      stub.withArgs('rails-project-navigator').returns({
+        get: function(key) {
+          if (key !== 'categories') {
+            done(new Error('Wrong key was attempted to be retrieved'));
+            return;
+          }
+
+          return [
+            {
+              "name": "Controllers",
+              "path": "app/controllers",
+              "exclusionGlob": "**/.keep"
+            },
+          ];
+        }
+      });
+
+      const testCategories = new Categories();
+
+      stub.restore();
+
+      testCategories.getFilesFor("Controllers").then(result => {
+        expect(result.files).to.have.same.members(expectedValues);
+        done();
+      }, error => {
+        done(new Error(`Failed to execute #getFilesFor: ${error}`));
+      });
+    });
+  });
+
+  describe("#add", function() {
+    it("adds a category to the list", function() {
+      this.categories.add("Config", "config");
+
+      expect(this.categories._categories).to.eql({
+        "Config": {
+          name: "Config",
+          relativePath: "config",
+          exclusionGlob: undefined
+        }
+      });
+    });
+  });
+
+  describe("#names", function() {
+    it("returns a sorted list of the available categories", function() {
+      this.categories.add("dogs", "dogs");
+      this.categories.add("Cats", "cats");
+      this.categories.add("carnivores", "carnivores");
+
+      const names = this.categories.names();
+      expect(names[0]).to.eql('carnivores');
+      expect(names[1]).to.eql('Cats');
+      expect(names[2]).to.eql('dogs');
+    });
+  });
+
+  describe("#showCategories", function() {
     before(function() {
       this.mockShowQuickPick = window.showQuickPick.bind(window);
-      this.mockOpenTextDocument = workspace.openTextDocument.bind(workspace);
     });
 
     after(function() {
       window.showQuickPick = this.mockShowQuickPick;
-      workspace.openTextDocument = this.mockOpenTextDocument;
     });
 
-    it("displays the correct config files", function(done) {
+    it("shows a quick pick list of the available categories", function(done) {
       const self = this;
-      const expectedValues = [
-        'application.rb',
-        'boot.rb',
-        'cable.yml',
-        'database.yml',
-        'environment.rb',
-        'environments/development.rb',
-        'environments/production.rb',
-        'environments/test.rb',
-        'locales/en.yml',
-        'puma.rb',
-        'routes.rb',
-        'secrets.yml',
-        'spring.rb',
-        'config.ru'
-      ];
+
+      this.categories.add("dogs", "dogs");
+      this.categories.add("Cats", "cats");
+      this.categories.add("carnivores", "carnivores");
 
       window.showQuickPick = function(items, options, token) {
         var returned = self.mockShowQuickPick(items, options, token);
-        expect(items).to.have.same.members(expectedValues);
+        expect(items).to.have.same.members([
+          'carnivores', 'Cats', 'dogs'
+        ]);
         done();
 
         return returned;
       };
 
-      this.categories.showFilesFor('Config');
+      this.categories.showCategories();
     });
+  });
 
-    it("displays the correct controllers", function(done) {
-      const self = this;
+  describe("#openFile", function() {
+    it("opens a specified file in a specified category", function(done) {
+      this.categories.add("Config", "config");
+
+      commands.executeCommand('workbench.action.closeAllEditors').then(() => {
+        const file = "application.rb";
+        const category = this.categories._get("Config");
+
+        this.categories.openFile({ file, category }).then(() => {
+          const openFilePath = `${workspace.rootPath}/${category.relativePath}/${file}`;
+
+          expect(window.activeTextEditor.document.fileName).to.eql(openFilePath)
+
+          done();
+        }, () => {
+          done(new Error('Failed to execute #openFile'));
+        });
+      }, () => {
+        done(new Error('Failed to execute command'));
+      });
+    });
+  });
+
+  describe("#getFilesFor", function() {
+    it("gets the correct files", function(done) {
+      this.categories.add("Controllers", "app/controllers");
+
       const expectedValues = [
         'application_controller.rb',
         'concerns/.keep',
         'users_controller.rb'
       ];
 
-      window.showQuickPick = function(items, options, token) {
-        var returned = self.mockShowQuickPick(items, options, token);
-        expect(items).to.have.same.members(expectedValues);
+      this.categories.getFilesFor("Controllers").then(result => {
+        expect(result.files).to.have.same.members(expectedValues);
         done();
-
-        return returned;
-      };
-
-      this.categories.showFilesFor('Controllers');
+      }, () => {
+        done(new Error("Failed to execute #getFilesFor"));
+      });
     });
 
-    it("displays the correct helpers", function(done) {
-      const self = this;
+    it("rejects the promise if no category is passed in", function(done) {
+      this.categories.getFilesFor().then(() => {
+        done(new Error('Should have rejected the promise'));
+      }, error => {
+        expect(error).to.eql("No category selected");
+        done();
+      });
+    });
+
+    it("rejects the promise if an invalid category is passed in", function(done) {
+      this.categories.getFilesFor("Fake Category").then(() => {
+        done(new Error('Should have rejected the promise'));
+      }, error => {
+        expect(error).to.eql("Fake Category is not a valid category");
+        done();
+      });
+    });
+
+    it("returns an empty file list if the path doesn't exist", function(done) {
+      this.categories.add("Controllers", "app/fake_controllers_path");
+
+      this.categories.getFilesFor("Controllers").then(result => {
+        expect(result.files).to.eql([]);
+        done();
+      }, () => {
+        done(new Error("Failed to execute #getFilesFor"));
+      });
+    });
+
+    it("excludes files using the exclusion glob", function(done) {
+      this.categories.add("Controllers", "app/controllers", "**/.keep");
+
       const expectedValues = [
-        'application_helper.rb',
-        'users_helper.rb'
+        'application_controller.rb',
+        'users_controller.rb'
       ];
 
+      this.categories.getFilesFor("Controllers").then(result => {
+        expect(result.files).to.have.same.members(expectedValues);
+        done();
+      }, () => {
+        done(new Error("Failed to execute #getFilesFor"));
+      });
+    });
+  });
+
+  describe("#showFiles", function() {
+    before(function() {
+      this.mockShowQuickPick = window.showQuickPick.bind(window);
+    });
+
+    after(function() {
+      window.showQuickPick = this.mockShowQuickPick;
+    });
+
+    it("shows the correct files", function(done) {
+      const self = this;
+      const files = ['application.rb', 'boot.rb'];
+      const category = 'Config';
+
       window.showQuickPick = function(items, options, token) {
         var returned = self.mockShowQuickPick(items, options, token);
-        expect(items).to.have.same.members(expectedValues);
+        expect(items).to.have.same.members(files);
         done();
 
         return returned;
       };
 
-      this.categories.showFilesFor('Helpers');
-    });
-
-    it("displays the correct initializers", function(done) {
-      const self = this;
-      const expectedValues = [
-        'application_controller_renderer.rb',
-        'assets.rb',
-        'backtrace_silencers.rb',
-        'cookies_serializer.rb',
-        'filter_parameter_logging.rb',
-        'inflections.rb',
-        'mime_types.rb',
-        'new_framework_defaults.rb',
-        'session_store.rb',
-        'wrap_parameters.rb'
-        ];
-
-      window.showQuickPick = function(items, options, token) {
-        var returned = self.mockShowQuickPick(items, options, token);
-        expect(items).to.have.same.members(expectedValues);
-        done();
-
-        return returned;
-      };
-
-      this.categories.showFilesFor('Initializers');
-    });
-
-    it("displays the correct jobs", function(done) {
-      const self = this;
-      const expectedValues = [
-        'application_job.rb'
-      ];
-
-      window.showQuickPick = function(items, options, token) {
-        var returned = self.mockShowQuickPick(items, options, token);
-        expect(items).to.have.same.members(expectedValues);
-        done();
-
-        return returned;
-      };
-
-      this.categories.showFilesFor('Jobs');
-    });
-
-    it("displays the correct layouts", function(done) {
-      const self = this;
-      const expectedValues = [
-        'application.html.erb',
-        'mailer.html.erb',
-        'mailer.text.erb'
-      ];
-
-      window.showQuickPick = function(items, options, token) {
-        var returned = self.mockShowQuickPick(items, options, token);
-        expect(items).to.have.same.members(expectedValues);
-        done();
-
-        return returned;
-      };
-
-      this.categories.showFilesFor('Layouts');
-    });
-
-    it("displays the correct mailers", function(done) {
-      const self = this;
-      const expectedValues = [
-        'application_mailer.rb'
-      ];
-
-      window.showQuickPick = function(items, options, token) {
-        var returned = self.mockShowQuickPick(items, options, token);
-        expect(items).to.have.same.members(expectedValues);
-        done();
-
-        return returned;
-      };
-
-      this.categories.showFilesFor('Mailers');
-    });
-
-    it("displays the correct migrations", function(done) {
-      const self = this;
-      const expectedValues = [
-        '20170421185159_create_users.rb'
-      ];
-
-      window.showQuickPick = function(items, options, token) {
-        var returned = self.mockShowQuickPick(items, options, token);
-        expect(items).to.have.same.members(expectedValues);
-        done();
-
-        return returned;
-      };
-
-      this.categories.showFilesFor('Migrations');
-    });
-
-    it("displays the correct models", function(done) {
-      const self = this;
-      const expectedValues = [
-        'application_record.rb',
-        'concerns/.keep',
-        'user.rb'
-      ];
-
-      window.showQuickPick = function(items, options, token) {
-        var returned = self.mockShowQuickPick(items, options, token);
-        expect(items).to.have.same.members(expectedValues);
-        done();
-
-        return returned;
-      };
-
-      this.categories.showFilesFor('Models');
-    });
-
-    it("displays the correct specs", function(done) {
-      const self = this;
-      const expectedValues = [
-        'models/user_spec.rb'
-      ];
-
-      window.showQuickPick = function(items, options, token) {
-        var returned = self.mockShowQuickPick(items, options, token);
-        expect(items).to.have.same.members(expectedValues);
-        done();
-
-        return returned;
-      };
-
-      this.categories.showFilesFor('Specs');
-    });
-
-    it("displays the correct tests", function(done) {
-      const self = this;
-      const expectedValues = [
-        'controllers/.keep',
-        'controllers/users_controller_test.rb',
-        'fixtures/.keep',
-        'fixtures/files/.keep',
-        'fixtures/users.yml',
-        'helpers/.keep',
-        'integration/.keep',
-        'mailers/.keep',
-        'models/.keep',
-        'models/user_test.rb',
-        'test_helper.rb'
-      ];
-
-      window.showQuickPick = function(items, options, token) {
-        var returned = self.mockShowQuickPick(items, options, token);
-        expect(items).to.have.same.members(expectedValues);
-        done();
-
-        return returned;
-      };
-
-      this.categories.showFilesFor('Tests');
-    });
-
-    it("displays the correct views", function (done) {
-      const self = this;
-      const expectedValues = [
-        "users/_form.html.erb",
-        "users/_user.json.jbuilder",
-        "users/edit.html.erb",
-        "users/index.html.erb",
-        "users/index.json.jbuilder",
-        "users/new.html.erb",
-        "users/show.html.erb",
-        "users/show.json.jbuilder"
-      ];
-
-      window.showQuickPick = function(items, options, token) {
-        var returned = self.mockShowQuickPick(items, options, token);
-        expect(items).to.have.same.members(expectedValues);
-        done();
-
-        return returned;
-      };
-
-      this.categories.showFilesFor('Views');
-    });
-
-    it ("opens the chosen file", function(done) {
-      const selectedItem = 'users/index.html.erb';
-      const self = this;
-
-      window.showQuickPick = function(items, options, token) {
-        return new Promise(function(resolve, reject) {
-          resolve(selectedItem);
-        });
-      };
-
-      workspace.openTextDocument = function(openPath) {
-        done();
-        expect(openPath.toString()).to.equal('file://' + path.join(workspace.rootPath, 'app/views', selectedItem));
-
-        return self.mockOpenTextDocument(openPath);
-      }
-
-      this.categories.showFilesFor('Views');
+      this.categories.showFiles({ files, category });
     });
   });
 });
