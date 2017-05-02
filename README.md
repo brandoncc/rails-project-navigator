@@ -35,6 +35,8 @@ You can also assign a keybinding to `railsProjectNavigator.navigate`, in place o
 
 ## Extension Settings
 
+### rails-project-navigator.categories
+
 You can customize the categories which are displayed however you would like. You can create your own as well as modify or even remove the defaults. The configuration is done using the `rails-project-navigator.categories` configuration setting.
 
 The setting should be an array of objects which each have at least a `name` and `path` key with string values.
@@ -47,13 +49,13 @@ The valid keys are:
 
 The recommended location for these settings is in "workspace settings", so that each of your projects can have their own configuration.
 
+### rails-project-navigator.globalExclusionGlobs
+
+If you have files which you do not ever want to display, in any category, you can blacklist them using `rails-project-navigator.globalExclusionGlobs`. This setting is an array of glob strings. If any file which would normally be shown in a category matches one or more of the globs, it will be excluded. This is applied after the exclusion glob which is set on each specific category.
+
 ## Known Issues
 
 None yet
-
-## TODO
-
-* Allow users to add "global exclude" patterns which will cause files to be excluded for all categories
 
 ## Release Notes
 

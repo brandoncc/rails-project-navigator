@@ -250,13 +250,42 @@ describe("Categories", function () {
       });
     });
 
-    it("excludes files using the exclusion glob", function(done) {
+    it("excludes files using the category exclusion glob", function(done) {
       this.categories.add("Controllers", "app/controllers", "**/.keep");
 
       const expectedValues = [
         'application_controller.rb',
         'users_controller.rb'
       ];
+
+      this.categories.getFilesFor("Controllers").then(result => {
+        expect(result.files).to.have.same.members(expectedValues);
+        done();
+      }, () => {
+        done(new Error("Failed to execute #getFilesFor"));
+      });
+    });
+
+    it("excludes files using the global exclusion globs setting", function(done) {
+      this.categories.add("Controllers", "app/controllers");
+      const configuredCategories = workspace.getConfiguration('rails-project-navigator').get('categories');
+
+      const stub = sinon.stub(workspace, 'getConfiguration');
+      const expectedValues = [
+        'users_controller.rb'
+      ];
+
+      stub.withArgs('rails-project-navigator').returns({
+        get: function(key) {
+          if (key === 'categories') { return configuredCategories; }
+          if (key !== 'globalExclusionGlobs') {
+            done(new Error('Wrong key was attempted to be retrieved'));
+            return;
+          }
+
+          return ["**/a*_controller.rb", "**/.keep"];
+        }
+      });
 
       this.categories.getFilesFor("Controllers").then(result => {
         expect(result.files).to.have.same.members(expectedValues);

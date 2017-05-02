@@ -2,7 +2,7 @@
   "name": "rails-project-navigator",
   "displayName": "Rails Project Navigator",
   "description": "Easily navigate the files in Rails applications",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "brandoncc",
   "repository": "https://github.com/brandoncc/rails-project-navigator",
   "engines": {
@@ -24,6 +24,11 @@
     ],
     "configuration": {
       "properties": {
+        "rails-project-navigator.globalExclusionGlobs": {
+          "type": "array",
+          "description": "An array of glob strings which will exclude matching files from being listed in any category",
+          "default": []
+        },
         "rails-project-navigator.categories": {
           "type": "array",
           "description": "Configuration for the categories which are listed and how they display files",
@@ -100,5 +105,8 @@
     "sinon": "^2.1.0",
     "typescript": "^2.0.3",
     "vscode": "^1.0.0"
+  },
+  "dependencies": {
+    "glob-to-regexp": "^0.3.0"
   }
 }
