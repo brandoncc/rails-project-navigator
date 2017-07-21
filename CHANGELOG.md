@@ -1,6 +1,15 @@
 # Change Log
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## 0.1.2
+* Fix Windows incompatible file url
+* Fix bug where /config.ru showed up in /config files list
+
+## 0.1.1
+* Add globalExclusionGlobs setting
+* Don't show an error when no file/category is selected
+* Add rake tasks to default configuration
+
 ## 0.1.0
 * Major rewrite to return promises from each method
 * Categories are now determined from `rails-project-navigator.categories` setting
