@@ -4,6 +4,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## 0.1.2
 * Fix Windows incompatible file url
 * Fix bug where /config.ru showed up in /config files list
+* Update tests to pass in Windows
 
 ## 0.1.1
 * Add globalExclusionGlobs setting

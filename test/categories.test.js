@@ -4,6 +4,7 @@ const { expect } = require('chai');
 const { commands, window, workspace } = require('vscode');
 const sinon = require('sinon');
 const Categories = require('../lib/categories');
+const path = require('path');
 
 const clearCategories = categoriesObject => categoriesObject._categories = {};
 
@@ -189,7 +190,7 @@ describe("Categories", function () {
         const category = this.categories._get("Config");
 
         this.categories.openFile({ file, category }).then(() => {
-          const openFilePath = `${workspace.rootPath}/${category.relativePath}/${file}`;
+          const openFilePath = path.join(workspace.rootPath, category.relativePath, file);
 
           expect(window.activeTextEditor.document.fileName).to.eql(openFilePath)
 
