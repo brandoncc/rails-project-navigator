@@ -294,6 +294,33 @@ describe("Categories", function () {
         done(new Error("Failed to execute #getFilesFor"));
       });
     });
+
+    // In order to filter out files from the wrong directories, I introduced
+    // a situation where some can be `false`. This is a test to make sure we
+    // filter out the booleans.
+    it("only includes strings", function(done) {
+      this.categories.add("Config", "config");
+
+      this.categories.getFilesFor("Config").then(result => {
+        result.files.forEach(file => expect(file).to.be.a('string'));
+        done();
+      }, () => {
+        done(new Error("Failed to execute #getFilesFor"));
+      });
+    });
+
+    // this is a regression test to make sure that config.ru doesn't match
+    // app/config again in the future
+    it("excludes files which are not within the correct relative directory", function(done) {
+      this.categories.add("Config", "config");
+
+      this.categories.getFilesFor("Config").then(result => {
+        expect(result.files).to.not.include('config.ru');
+        done();
+      }, () => {
+        done(new Error("Failed to execute #getFilesFor"));
+      });
+    });
   });
 
   describe("#showFiles", function() {
